@@ -1,0 +1,33 @@
+.search-result-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid #c0c0c0;
+    width: 400px;
+    overflow: hidden;
+    margin-top: 6px;
+    padding: 6px 6px 0 6px;
+}
+.search-result-item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 6px;
+    align-items: center;
+    border-radius: 6px;
+    transition: 0.25s background-color;
+}
+.search-result-item:hover {
+    background-color: rgb(246, 249, 250);
+    cursor: pointer;
+}
+.search-result-thumb {
+    height: 48px;
+    width: 48px;
+    margin-right: 12px;
+}
+.search-result-label {
+    flex: 1;
+}

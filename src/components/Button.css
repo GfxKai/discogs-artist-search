@@ -1,0 +1,21 @@
+.button {
+    padding: 12px;
+    border-radius: 6px;
+    background-color: white;
+    border: 1px solid #c0c0c0;
+    outline: none;
+    transition: 0.25s all;
+}
+.button:not(.toggled):enabled:hover {
+    color: #5593c5;
+    border-color: #7cbbee;
+    cursor: pointer;
+}
+.button:disabled:hover {
+    cursor: not-allowed;
+}
+.button.toggled {
+    background-color: #32a0ff;
+    border-color: #32a0ff;
+    color: white;
+}
