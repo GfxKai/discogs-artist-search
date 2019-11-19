@@ -5,6 +5,7 @@
     border: 1px solid #c0c0c0;
     outline: none;
     transition: 0.25s all;
+    font-size: 12pt;
 }
 .button:not(.toggled):enabled:hover {
     color: #5593c5;

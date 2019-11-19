@@ -50,26 +50,26 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({
                 <Button
                     label="Sort By Title"
                     action={ () => setSortField('title') }
-                    toggleState={ sortField === 'title' }
-                    style={{ fontSize: 14, marginLeft: 12 }}
+                    isToggled={ sortField === 'title' }
+                    style={{ marginLeft: 12 }}
                 />
                 <Button
                     label="Sort By Year"
                     action={ () => setSortField('year') }
-                    toggleState={ sortField === 'year' }
-                    style={{ fontSize: 14, marginLeft: 12 }}
+                    isToggled={ sortField === 'year' }
+                    style={{ marginLeft: 12 }}
                 />
                 <Button
                     label="Ascending"
                     action={ () => setSortOrder('asc') }
-                    toggleState={ sortOrder === 'asc' }
-                    style={{ fontSize: 14, marginLeft: 36 }}
+                    isToggled={ sortOrder === 'asc' }
+                    style={{ marginLeft: 36 }}
                 />
                 <Button
                     label="Descending"
                     action={ () => setSortOrder('desc') }
-                    toggleState={ sortOrder === 'desc' }
-                    style={{ fontSize: 14, marginLeft: 12 }}
+                    isToggled={ sortOrder === 'desc' }
+                    style={{ marginLeft: 12 }}
                 />
             </div>
             <div className="release-table">

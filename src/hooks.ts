@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAlerts } from 'react-spring-alerts';
-import DiscogsAPI, { SearchResult, ReleasesResult, SortOrder } from './api';
+
+import DiscogsAPI, {
+    SearchResult,
+    ReleasesResult,
+    SortField,
+    SortOrder
+} from './api';
 
 function useDebounce<T>(value: T, delay: number): T {
     const [debouncedValue, setDebouncedValue] = useState(value);
@@ -30,7 +36,9 @@ const useDiscogsSearch = (query: string): SearchResult[] => {
                 message,
             });
         };
-        if (query) {
+        if (!query) {
+            setSearchResults([]);
+        } else {
             DiscogsAPI.searchArtists(query).then(
                 (response) => {
                     if (!response.error && response.data) {
@@ -41,16 +49,14 @@ const useDiscogsSearch = (query: string): SearchResult[] => {
                     }
                 }
             );
-        } else {
-            setSearchResults([]);
         }
     }, [query]);
-    return query ? searchResults : [];
+    return searchResults;
 };
 
 const useDiscogsReleases = (
     artistInfo?: SearchResult,
-    sortField: string = 'year',
+    sortField: SortField = 'year',
     sortOrder: SortOrder = 'asc'
 ): ReleasesResult[] => {
     const [releases, setReleases] = useState<ReleasesResult[]>([]);
@@ -64,7 +70,9 @@ const useDiscogsReleases = (
                 message,
             });
         };
-        if (artistInfo) {
+        if (!artistInfo) {
+            setReleases([]);
+        } else {
             DiscogsAPI.getReleases(artistInfo.id, sortField, sortOrder).then(
                 (response) => {
                     if (response.data && !response.error) {
@@ -76,11 +84,9 @@ const useDiscogsReleases = (
                     }
                 }
             );
-        } else {
-            setReleases([]);
         }
     }, [artistInfo, sortField, sortOrder]);
-    return artistInfo ? releases : [];
+    return releases;
 };
 
 export {

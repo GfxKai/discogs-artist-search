@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { AlertsWrapper } from 'react-spring-alerts';
-import { SearchResult } from './api';
+
+import { SearchResult, SortOrder, SortField } from './api';
 import { useDebounce, useDiscogsSearch, useDiscogsReleases } from './hooks';
+
 import Input from './components/Input';
 import ResultsList from './components/ResultList';
 import ReleasesTable from './components/ReleasesTable';
@@ -9,16 +11,23 @@ import './App.css';
 
 const App: React.FC = () => {
     const [queryValue, setQueryValue] = useState<string>('');
+
     const debouncedQueryValue = useDebounce(queryValue, 350);
+
     const searchResults = useDiscogsSearch(debouncedQueryValue);
+
     const [selectedArtist, setSelectedArtist] = useState<SearchResult>();
+
     const onResultSelect = (artist: SearchResult): void => {
         setSelectedArtist(artist);
         setQueryValue('');
     };
-    const [releasesSortField, setReleasesSortField] = useState<'year'|'title'>('year');
-    const [releasesSortOrder, setReleasesSortOrder] = useState<'asc'|'desc'>('desc');
+
+    const [releasesSortField, setReleasesSortField] = useState<SortField>('year');
+    const [releasesSortOrder, setReleasesSortOrder] = useState<SortOrder>('desc');
+
     const artistReleases = useDiscogsReleases(selectedArtist, releasesSortField, releasesSortOrder);
+
     const [searchFocused, setSearchFocused] = useState<boolean>(false);
     return (
         <div className="app">

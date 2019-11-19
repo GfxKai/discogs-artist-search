@@ -4,7 +4,7 @@ import './Button.css';
 interface ButtonProps {
     label: string;
     action: Function;
-    toggleState?: boolean;
+    isToggled?: boolean;
     style?: object;
     disabled?: boolean;
 }
@@ -12,12 +12,12 @@ interface ButtonProps {
 const Button: React.FC<ButtonProps> = ({
     label,
     action,
-    toggleState,
+    isToggled,
     style = {},
     disabled = false
 }) => (
     <button
-        className={ toggleState ? 'button toggled' : 'button' }
+        className={ isToggled ? 'button toggled' : 'button' }
         style={ style }
         type="button"
         onClick={ () => action() }
