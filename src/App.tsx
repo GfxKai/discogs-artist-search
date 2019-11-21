@@ -26,7 +26,17 @@ const App: React.FC = () => {
     const [releasesSortField, setReleasesSortField] = useState<SortField>('year');
     const [releasesSortOrder, setReleasesSortOrder] = useState<SortOrder>('desc');
 
-    const artistReleases = useDiscogsReleases(selectedArtist, releasesSortField, releasesSortOrder);
+    const [releasesPage, setReleasesPage] = useState(1);
+
+    const [
+        artistReleases,
+        isLoading
+    ] = useDiscogsReleases(
+        selectedArtist,
+        releasesSortField,
+        releasesSortOrder,
+        releasesPage,
+    );
 
     const [searchFocused, setSearchFocused] = useState<boolean>(false);
     return (
@@ -43,20 +53,27 @@ const App: React.FC = () => {
                     onBlur={ () => setSearchFocused(false) }
                     style={{ width: 300 }}
                 />
-                { searchFocused && searchResults.length > 0 && (
-                    <ResultsList
-                        searchResults={ searchResults }
-                        onResultSelect={ onResultSelect }
-                    />
-                )}
+                {
+                    searchFocused
+                    && searchResults.length > 0
+                    && (
+                        <ResultsList
+                            searchResults={ searchResults }
+                            onResultSelect={ onResultSelect }
+                        />
+                    )
+                }
             </div>
             <ReleasesTable
+                isLoading={ isLoading }
                 artist={ selectedArtist }
                 releases={ artistReleases }
                 sortField={ releasesSortField }
                 setSortField={ setReleasesSortField }
                 sortOrder={ releasesSortOrder }
                 setSortOrder={ setReleasesSortOrder }
+                page={ releasesPage }
+                setPage={ setReleasesPage }
             />
         </div>
     );

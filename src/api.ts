@@ -186,12 +186,14 @@ class DiscogsAPI {
         artistId: number,
         sortField: SortField = 'year',
         sortOrder: SortOrder = 'desc',
+        page: number,
     ): AsyncRequestResponse<ReleasesResponse> => {
         const endpoint = `/artists/${artistId}/releases`;
         const params: ReleasesRequestConfig = {
             sort: sortField,
             sort_order: sortOrder,
             per_page: 25,
+            page
         };
         return this.makeAuthenticatedRequest(endpoint, params);
     }

@@ -1,7 +1,8 @@
 import React from 'react';
 import './ReleasesTable.css';
-import { ReleasesResult, SearchResult } from '../api';
+import { ReleasesResult, SearchResult, SortField, SortOrder } from '../api';
 import Button from './Button';
+import LoadingVinyl from './Loading';
 
 interface ReleaseItemProps {
     releaseInfo: ReleasesResult;
@@ -20,27 +21,35 @@ const ReleaseItem: React.FC<ReleaseItemProps> = ({ releaseInfo }) => (
 );
 
 interface ReleasesTableProps {
-    artist?: SearchResult;
+    isLoading: boolean;
+    artist: SearchResult | undefined;
     releases: ReleasesResult[];
-    sortField: 'year'|'title';
-    setSortField: Function;
-    sortOrder: 'asc'|'desc';
-    setSortOrder: Function;
+    sortField: SortField;
+    setSortField: React.Dispatch<React.SetStateAction<SortField>>;
+    sortOrder: SortOrder;
+    setSortOrder: React.Dispatch<React.SetStateAction<SortOrder>>;
+    page: number;
+    setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ReleasesTable: React.FC<ReleasesTableProps> = ({
+    isLoading,
     artist,
     releases,
     sortField,
     setSortField,
     sortOrder,
-    setSortOrder
+    setSortOrder,
+    page,
+    setPage,
 }) => {
     const Releases = releases.map(
         (release) => (
             <ReleaseItem key={ release.id } releaseInfo={ release } />
         )
     );
+    const previousPage = () => setPage((currentPage) => currentPage - 1);
+    const nextPage = () => setPage((currentPage) => currentPage + 1);
     return (
         <div className="release-table-container">
             <div className="release-table-header-row">
@@ -73,7 +82,28 @@ const ReleasesTable: React.FC<ReleasesTableProps> = ({
                 />
             </div>
             <div className="release-table">
-                { Releases }
+                <div className="release-list">
+                    { Releases }
+                </div>
+                { isLoading && (
+                    <div className="load-overlay">
+                        <LoadingVinyl />
+                    </div>
+                )}
+            </div>
+            <div className="release-table-footer">
+                <Button
+                    label="<"
+                    action={ previousPage }
+                    disabled={ !artist || page === 1 }
+                />
+                <span style={{ width: 20, textAlign: 'center', marginLeft: 12 }}>{ page }</span>
+                <Button
+                    label=">"
+                    action={ nextPage }
+                    disabled={ !artist }
+                    style={{ marginLeft: 12 }}
+                />
             </div>
         </div>
     );

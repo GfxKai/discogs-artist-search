@@ -54,11 +54,23 @@ const useDiscogsSearch = (query: string): SearchResult[] => {
     return searchResults;
 };
 
-const useDiscogsReleases = (
-    artistInfo?: SearchResult,
-    sortField: SortField = 'year',
-    sortOrder: SortOrder = 'asc'
-): ReleasesResult[] => {
+type ReleasesHook = (
+    artistInfo: SearchResult | undefined,
+    sortField: SortField,
+    sortOrder: SortOrder,
+    page: number,
+) => [
+    ReleasesResult[],
+    boolean,
+];
+
+const useDiscogsReleases: ReleasesHook = (
+    artistInfo,
+    sortField = 'year',
+    sortOrder = 'asc',
+    page,
+) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [releases, setReleases] = useState<ReleasesResult[]>([]);
     // useRef to preserve Alerts context between renders
     const AlertsRef = useRef(useAlerts());
@@ -73,7 +85,8 @@ const useDiscogsReleases = (
         if (!artistInfo) {
             setReleases([]);
         } else {
-            DiscogsAPI.getReleases(artistInfo.id, sortField, sortOrder).then(
+            setIsLoading(true);
+            DiscogsAPI.getReleases(artistInfo.id, sortField, sortOrder, page).then(
                 (response) => {
                     if (response.data && !response.error) {
                         setReleases(response.data.releases);
@@ -83,10 +96,12 @@ const useDiscogsReleases = (
                         handleRequestError(response.error.message);
                     }
                 }
+            ).finally(
+                () => setIsLoading(false)
             );
         }
-    }, [artistInfo, sortField, sortOrder]);
-    return releases;
+    }, [artistInfo, sortField, sortOrder, page]);
+    return [releases, isLoading];
 };
 
 export {

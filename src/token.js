@@ -1,4 +1,4 @@
 // Replace with your developer token
-const DISCOGS_TOKEN = 'YOUR_DISCOGS_TOKEN_HERE';
+const DISCOGS_TOKEN = 'yZLUlbuKEnzMWUnNBZCsZfAunBbljXxqUSyHzafd';
 
 export default DISCOGS_TOKEN;
